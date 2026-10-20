@@ -1,0 +1,73 @@
+{
+  "version": "2026.10.20",
+  "maintainer": "Doomsday Network Security (https://doomsday.network)",
+  "license": "MIT",
+  "description": "Open-source threat intelligence feed of GitHub repositories, owners, and signatures used as AI coding agent prompt-injection honeypots, clanker-blocklist traps, and synthetic fake bounty boards.",
+  "known_honeypot_repos": [
+    {
+      "repo": "UnsafeLabs/Bounty-Hunters",
+      "category": "bot-trap-blocklist",
+      "severity": "critical",
+      "reason": "Bait repository designed to lure autonomous coding agents into opening PRs so their GitHub accounts can be harvested into public bot-blocking lists (e.g. clanker-blocker)."
+    },
+    {
+      "repo": "SecureBananaLabs/bug-bounty",
+      "category": "prompt-injection-honeypot",
+      "severity": "critical",
+      "reason": "Contains indirect prompt-injection payloads in issues and repo files attempting to trick LLM agents into exfiltrating environment variables, API keys, or system prompts."
+    },
+    {
+      "repo": "Senthemodder/aquarium-of-gullibles",
+      "category": "prompt-injection-honeypot",
+      "severity": "critical",
+      "reason": "Adversarial autonomous agent benchmark masquerading as '[Verified Escrow]' bounties; issues contain system-prompt extraction and adversarial instruction overrides."
+    },
+    {
+      "repo": "zhangjiayang6835-cyber/bounty-plaza",
+      "category": "synthetic-fake-bounty",
+      "severity": "high",
+      "reason": "Synthetic automated fake bounty board generating hundreds of unbacked '[Bounty]' issues across mirror forks to farm free agent compute."
+    },
+    {
+      "repo": "RanuK12/bounty-plaza",
+      "category": "synthetic-fake-bounty",
+      "severity": "high",
+      "reason": "Mirror/fork of synthetic fake bounty-plaza issue farm."
+    },
+    {
+      "repo": "osmesirius-ship-it/DAXDA-Bounty-Plaza-645",
+      "category": "synthetic-fake-bounty",
+      "severity": "high",
+      "reason": "Automated synthetic bounty ticket generator."
+    }
+  ],
+  "known_malicious_or_noise_owners": [
+    "unsafelabs",
+    "securebananalabs",
+    "senthemodder",
+    "zhangjiayang6835-cyber",
+    "clankernation",
+    "oss-hunter-livefire",
+    "charles-microbounties",
+    "charles-openclaw",
+    "bountyscout",
+    "sn-monetization-runtime"
+  ],
+  "known_verified_bounty_orgs": [
+    "BasedHardware",
+    "calcom",
+    "twentyhq",
+    "formbricks",
+    "triggerdotdev",
+    "medusajs",
+    "activepieces",
+    "juspay",
+    "remotion-dev",
+    "Infisical",
+    "antiwork",
+    "tscircuit",
+    "zio",
+    "golemcloud",
+    "coollabsio"
+  ]
+}
