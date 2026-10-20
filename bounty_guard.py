@@ -87,10 +87,8 @@ PROMPT_INJECTION_PATTERNS: list[tuple[str, re.Pattern[str], int]] = [
     (
         "Credential / secret exfiltration command",
         re.compile(
-            r"curl\s+[^
-]*(\$\{?[A-Z0-9_]*KEY|\$\{?[A-Z0-9_]*TOKEN|\.env|~/.ssh|/etc/passwd)|"
-            r"wget\s+[^
-]*\$\{?[A-Z0-9_]*(?:TOKEN|KEY|SECRET)|"
+            r"curl\s+[^\n]*(\$\{?[A-Z0-9_]*KEY|\$\{?[A-Z0-9_]*TOKEN|\.env|~/.ssh|/etc/passwd)|"
+            r"wget\s+[^\n]*\$\{?[A-Z0-9_]*(?:TOKEN|KEY|SECRET)|"
             r"cat\s+(?:~/\.ssh|\$HOME/\.ssh|\.env|~/.aws/credentials)",
             re.I,
         ),
@@ -106,14 +104,14 @@ PROMPT_INJECTION_PATTERNS: list[tuple[str, re.Pattern[str], int]] = [
     ),
     (
         "Zero-width / invisible Unicode tag character smuggling",
-        re.compile(r"[​‌‍⁠﻿]{3,}|[󠀀-󠁿]+"),
+        re.compile(r"[\u200b\u200c\u200d\u2060\ufeff]{3,}|[\U000e0000-\U000e007f]+"),
         50,
     ),
     (
         "Canonical bot-bait task signature ('calculate pi' / 'clanker' trap)",
         re.compile(
             r"calculate\s+the\s+exact\s+value\s+of\s+pi|autonom\w*\s+agents?\s+only|"
-            r"clanker|aquarium[\s-]of[\s-]gullibles",
+            r"\bclanker\b|aquarium[\s-]of[\s-]gullibles",
             re.I,
         ),
         65,
@@ -198,8 +196,7 @@ def evaluate_text_risk(text: str) -> list[dict[str, Any]]:
     for label, pattern, weight in PROMPT_INJECTION_PATTERNS:
         m = pattern.search(text)
         if m:
-            snippet = m.group(0)[:120].replace("
-", " ")
+            snippet = m.group(0)[:120].replace("\n", " ")
             findings.append({"reason": label, "weight": weight, "evidence": snippet})
     return findings
 
@@ -277,9 +274,7 @@ def vet_target(target: str, inspect_files: bool = True) -> dict[str, Any]:
             issue_title = issue_data.get("title", "")
             body = issue_data.get("body") or ""
             labels = " ".join(lbl.get("name", "") for lbl in issue_data.get("labels", []))
-            combined = f"{issue_title}
-{labels}
-{body}"
+            combined = f"{issue_title}\n{labels}\n{body}"
             findings.extend(evaluate_text_risk(combined))
             if ESCROW_PATTERNS.search(combined):
                 trust_signals.append("Escrow/platform reference detected (Algora / Polar / Gitcoin)")
@@ -347,9 +342,7 @@ def scan_github_bounties(limit: int = 20) -> dict[str, list[dict[str, Any]]]:
             title = item.get("title") or ""
             body = item.get("body") or ""
             labels = [lbl.get("name", "") for lbl in item.get("labels", [])]
-            combined = f"{title}
-{' '.join(labels)}
-{body}"
+            combined = f"{title}\n{' '.join(labels)}\n{body}"
 
             findings: list[dict[str, Any]] = []
             if repo_full in honeypot_repos:
@@ -407,18 +400,15 @@ def main() -> int:
                 print(f" Title:      {result['issue_title']}")
             print("=" * 72)
             if result["trust_signals"]:
-                print("
-[+] Trust Signals:")
+                print("\n[+] Trust Signals:")
                 for s in result["trust_signals"]:
                     print(f"  * {s}")
             if result["findings"]:
-                print("
-[!] Risk Findings:")
+                print("\n[!] Risk Findings:")
                 for f in result["findings"]:
                     print(f"  - (+{f['weight']}) {f['reason']}: {f.get('evidence', '')}")
             else:
-                print("
-[+] No prompt-injection or honeypot signatures detected.")
+                print("\n[+] No prompt-injection or honeypot signatures detected.")
         return 2 if result["verdict"] == "QUARANTINE" else 0
 
     if args.cmd == "scan":
@@ -431,12 +421,10 @@ def main() -> int:
         print("=" * 72)
         for item in report["safe"]:
             badge = " [VERIFIED ORG]" if item["verified_org"] else ""
-            print(f"
-[SAFE]{badge} [{item['repository']}] {item['title']}")
+            print(f"\n[SAFE]{badge} [{item['repository']}] {item['title']}")
             print(f"  {item['url']}")
         if report["quarantined"]:
-            print("
-" + "-" * 72)
+            print("\n" + "-" * 72)
             print(" QUARANTINED HONEYPOTS & SYNTHETIC TRAPS:")
             for q in report["quarantined"][:10]:
                 reasons = "; ".join(f["reason"] for f in q["findings"])
