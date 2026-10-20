@@ -1,14 +1,27 @@
 {
-  "version": "2026.10.20",
+  "version": "2026.10.20.2",
+  "updated_at": "2026-10-20T21:10:00Z",
   "maintainer": "Doomsday Network Security (https://doomsday.network)",
   "license": "MIT",
-  "description": "Open-source threat intelligence feed of GitHub repositories, owners, and signatures used as AI coding agent prompt-injection honeypots, clanker-blocklist traps, and synthetic fake bounty boards.",
+  "description": "Continuously updated open-source threat intelligence feed of GitHub repositories, owners, and signatures used as AI coding agent prompt-injection honeypots, clanker-blocklist traps, canonical repo impersonators, and synthetic fake bounty boards.",
   "known_honeypot_repos": [
     {
       "repo": "UnsafeLabs/Bounty-Hunters",
       "category": "bot-trap-blocklist",
       "severity": "critical",
       "reason": "Bait repository designed to lure autonomous coding agents into opening PRs so their GitHub accounts can be harvested into public bot-blocking lists (e.g. clanker-blocker)."
+    },
+    {
+      "repo": "UnsafeLabs/RFC-5322",
+      "category": "bot-trap-blocklist",
+      "severity": "critical",
+      "reason": "Secondary UnsafeLabs autonomous agent bait repository."
+    },
+    {
+      "repo": "ClankerNation/OpenAgents",
+      "category": "bot-trap-blocklist",
+      "severity": "critical",
+      "reason": "Mass-produced bait issues targeting autonomous agents with unbacked rewards and bot-tagging labels."
     },
     {
       "repo": "SecureBananaLabs/bug-bounty",
@@ -23,10 +36,88 @@
       "reason": "Adversarial autonomous agent benchmark masquerading as '[Verified Escrow]' bounties; issues contain system-prompt extraction and adversarial instruction overrides."
     },
     {
+      "repo": "tine1117/oss-hunter-livefire",
+      "category": "prompt-injection-honeypot",
+      "severity": "critical",
+      "reason": "Live-fire adversarial agent testbed disguised as open-source bounty issues."
+    },
+    {
+      "repo": "xevrion-v2/agent-playground",
+      "category": "prompt-injection-honeypot",
+      "severity": "high",
+      "reason": "Agent manipulation and prompt-injection sandbox targeting automated bounty hunters."
+    },
+    {
+      "repo": "p1ngtoohigh/Jarvus-Pub",
+      "category": "prompt-injection-honeypot",
+      "severity": "high",
+      "reason": "Issues embed hidden HTML comment instruction overrides targeting autonomous bounty scanners."
+    },
+    {
+      "repo": "jaasielitaigq/go-git",
+      "category": "canonical-impersonation-trap",
+      "severity": "critical",
+      "reason": "Throwaway clone impersonating go-git/go-git with fabricated high-dollar bounty issues and no payout rail."
+    },
+    {
+      "repo": "jaasielitaigq/pgx",
+      "category": "canonical-impersonation-trap",
+      "severity": "critical",
+      "reason": "Throwaway clone impersonating jackc/pgx with fabricated bounty issues."
+    },
+    {
+      "repo": "jahmeergnlt/traefik",
+      "category": "canonical-impersonation-trap",
+      "severity": "critical",
+      "reason": "Throwaway clone impersonating traefik/traefik with fabricated bounty issues."
+    },
+    {
+      "repo": "kyresehk190/vault",
+      "category": "canonical-impersonation-trap",
+      "severity": "critical",
+      "reason": "Throwaway clone impersonating hashicorp/vault with fabricated bounty issues."
+    },
+    {
+      "repo": "madalynerlge2/chi",
+      "category": "canonical-impersonation-trap",
+      "severity": "high",
+      "reason": "Throwaway clone impersonating go-chi/chi soliciting unpaid agent work."
+    },
+    {
+      "repo": "madalynerlge2/cli",
+      "category": "canonical-impersonation-trap",
+      "severity": "high",
+      "reason": "Throwaway clone impersonating cli/cli soliciting unpaid agent work."
+    },
+    {
+      "repo": "raimeecas/mysql",
+      "category": "canonical-impersonation-trap",
+      "severity": "critical",
+      "reason": "Throwaway clone impersonating mysql/mysql-server with fake bounty issues."
+    },
+    {
+      "repo": "zamariyahg/go-jose",
+      "category": "canonical-impersonation-trap",
+      "severity": "critical",
+      "reason": "Throwaway clone impersonating go-jose/go-jose with fake bounty issues."
+    },
+    {
+      "repo": "WillSmithTE/qdrant-qdrant",
+      "category": "canonical-impersonation-trap",
+      "severity": "high",
+      "reason": "Clone impersonating qdrant/qdrant with unbacked bounty labels."
+    },
+    {
       "repo": "zhangjiayang6835-cyber/bounty-plaza",
       "category": "synthetic-fake-bounty",
       "severity": "high",
       "reason": "Synthetic automated fake bounty board generating hundreds of unbacked '[Bounty]' issues across mirror forks to farm free agent compute."
+    },
+    {
+      "repo": "zhangjiayang6835-cyber/ai-research",
+      "category": "synthetic-fake-bounty",
+      "severity": "high",
+      "reason": "Synthetic unpaid bounty farm operated by zhangjiayang6835-cyber."
     },
     {
       "repo": "RanuK12/bounty-plaza",
@@ -39,6 +130,54 @@
       "category": "synthetic-fake-bounty",
       "severity": "high",
       "reason": "Automated synthetic bounty ticket generator."
+    },
+    {
+      "repo": "relayhop/sn-monetization-runtime",
+      "category": "synthetic-fake-bounty",
+      "severity": "high",
+      "reason": "Unescrowed synthetic bounty farm harvesting PRs without payout rails."
+    },
+    {
+      "repo": "UID9622/lh-standard-adapter",
+      "category": "synthetic-fake-bounty",
+      "severity": "high",
+      "reason": "Synthetic bounty farm with no verifiable payer or escrow."
+    },
+    {
+      "repo": "DanielIoni-creator/MyZubsterWeb",
+      "category": "synthetic-fake-bounty",
+      "severity": "high",
+      "reason": "Unbacked bounty farm soliciting full-feature builds without escrow."
+    },
+    {
+      "repo": "MyZubster-Ecosystem/MyZubster-Marketplace",
+      "category": "synthetic-fake-bounty",
+      "severity": "high",
+      "reason": "Unbacked bounty farm soliciting free engineering work."
+    },
+    {
+      "repo": "MyZubster-Ecosystem/MyZubsterGateway",
+      "category": "synthetic-fake-bounty",
+      "severity": "medium",
+      "reason": "Unescrowed bounty issues under MyZubster-Ecosystem."
+    },
+    {
+      "repo": "Vicentegg4212/sasmex-rss-bounty",
+      "category": "synthetic-fake-bounty",
+      "severity": "high",
+      "reason": "Freshly minted repo advertising unescrowed bounty issues."
+    },
+    {
+      "repo": "chouhanindustries/copperhead",
+      "category": "synthetic-fake-bounty",
+      "severity": "high",
+      "reason": "Unescrowed bounty trap with no maintainer payout history."
+    },
+    {
+      "repo": "theselfish/SlopStation13",
+      "category": "synthetic-fake-bounty",
+      "severity": "medium",
+      "reason": "Unverified synthetic bounty issues."
     }
   ],
   "known_malicious_or_noise_owners": [
@@ -47,11 +186,29 @@
     "senthemodder",
     "zhangjiayang6835-cyber",
     "clankernation",
+    "tine1117",
+    "xevrion-v2",
+    "p1ngtoohigh",
+    "jaasielitaigq",
+    "jahmeergnlt",
+    "kyresehk190",
+    "madalynerlge2",
+    "raimeecas",
+    "zamariyahg",
+    "willsmithte",
+    "relayhop",
+    "uid9622",
+    "danielioni-creator",
+    "myzubster-ecosystem",
+    "vicentegg4212",
+    "chouhanindustries",
     "oss-hunter-livefire",
     "charles-microbounties",
     "charles-openclaw",
     "bountyscout",
-    "sn-monetization-runtime"
+    "sn-monetization-runtime",
+    "mergework",
+    "rustchain"
   ],
   "known_verified_bounty_orgs": [
     "BasedHardware",
@@ -68,6 +225,7 @@
     "tscircuit",
     "zio",
     "golemcloud",
-    "coollabsio"
+    "coollabsio",
+    "tenstorrent"
   ]
 }

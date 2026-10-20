@@ -7,12 +7,14 @@ License: MIT | Zero third-party dependencies (Python 3.9+ stdlib only)
 Usage:
     python bounty_guard.py vet https://github.com/owner/repo/issues/123
     python bounty_guard.py vet owner/repo
-    python bounty_guard.py scan [--limit 20] [--json results.json]
+    python bounty_guard.py scan [--limit 20] [--update-db] [--json results.json]
+    python bounty_guard.py add owner/repo --category prompt-injection-honeypot --reason "..."
 """
 from __future__ import annotations
 
 import argparse
 import base64
+import datetime
 import json
 import os
 import re
@@ -33,11 +35,34 @@ if hasattr(sys.stdout, "reconfigure"):
 
 BUILTIN_HONEYPOT_REPOS = {
     "unsafelabs/bounty-hunters": "Bait trap harvesting agent accounts for public bot blocklists",
+    "unsafelabs/rfc-5322": "Secondary UnsafeLabs autonomous agent bait repository",
+    "clankernation/openagents": "Mass-produced bait issues targeting autonomous agents",
     "securebananalabs/bug-bounty": "Prompt-injection honeypot targeting autonomous coding agents",
     "senthemodder/aquarium-of-gullibles": "Adversarial agent benchmark disguised as '[Verified Escrow]' bounties",
+    "tine1117/oss-hunter-livefire": "Live-fire adversarial agent testbed disguised as open-source bounties",
+    "xevrion-v2/agent-playground": "Agent manipulation and prompt-injection sandbox",
+    "p1ngtoohigh/jarvus-pub": "Issues embed hidden HTML comment instruction overrides targeting autonomous bounty scanners",
+    "jaasielitaigq/go-git": "Throwaway clone impersonating go-git/go-git with fabricated bounties",
+    "jaasielitaigq/pgx": "Throwaway clone impersonating jackc/pgx with fabricated bounties",
+    "jahmeergnlt/traefik": "Throwaway clone impersonating traefik/traefik with fabricated bounties",
+    "kyresehk190/vault": "Throwaway clone impersonating hashicorp/vault with fabricated bounties",
+    "madalynerlge2/chi": "Throwaway clone impersonating go-chi/chi soliciting unpaid agent work",
+    "madalynerlge2/cli": "Throwaway clone impersonating cli/cli soliciting unpaid agent work",
+    "raimeecas/mysql": "Throwaway clone impersonating mysql/mysql-server with fake bounties",
+    "zamariyahg/go-jose": "Throwaway clone impersonating go-jose/go-jose with fake bounties",
+    "willsmithte/qdrant-qdrant": "Clone impersonating qdrant/qdrant with unbacked bounty labels",
     "zhangjiayang6835-cyber/bounty-plaza": "Synthetic unpaid fake bounty farm",
+    "zhangjiayang6835-cyber/ai-research": "Synthetic unpaid bounty farm operated by zhangjiayang6835-cyber",
     "ranuk12/bounty-plaza": "Synthetic unpaid fake bounty farm fork",
     "osmesirius-ship-it/daxda-bounty-plaza-645": "Synthetic fake bounty ticket farm",
+    "relayhop/sn-monetization-runtime": "Unescrowed synthetic bounty farm harvesting PRs without payout rails",
+    "uid9622/lh-standard-adapter": "Synthetic bounty farm with no verifiable payer or escrow",
+    "danielioni-creator/myzubsterweb": "Unbacked bounty farm soliciting full-feature builds without escrow",
+    "myzubster-ecosystem/myzubster-marketplace": "Unbacked bounty farm soliciting free engineering work",
+    "myzubster-ecosystem/myzubstergateway": "Unescrowed bounty issues under MyZubster-Ecosystem",
+    "vicentegg4212/sasmex-rss-bounty": "Freshly minted repo advertising unescrowed bounty issues",
+    "chouhanindustries/copperhead": "Unescrowed bounty trap with no maintainer payout history",
+    "theselfish/slopstation13": "Unverified synthetic bounty issues",
 }
 
 BUILTIN_NOISE_OWNERS = {
@@ -46,6 +71,22 @@ BUILTIN_NOISE_OWNERS = {
     "senthemodder",
     "zhangjiayang6835-cyber",
     "clankernation",
+    "tine1117",
+    "xevrion-v2",
+    "p1ngtoohigh",
+    "jaasielitaigq",
+    "jahmeergnlt",
+    "kyresehk190",
+    "madalynerlge2",
+    "raimeecas",
+    "zamariyahg",
+    "willsmithte",
+    "relayhop",
+    "uid9622",
+    "danielioni-creator",
+    "myzubster-ecosystem",
+    "vicentegg4212",
+    "chouhanindustries",
     "oss-hunter-livefire",
     "charles-microbounties",
     "charles-openclaw",
@@ -71,6 +112,7 @@ VERIFIED_PAYER_ORGS = {
     "zio",
     "golemcloud",
     "coollabsio",
+    "tenstorrent",
 }
 
 PROMPT_INJECTION_PATTERNS: list[tuple[str, re.Pattern[str], int]] = [
@@ -137,23 +179,116 @@ ESCROW_PATTERNS = re.compile(
 )
 
 
+def get_db_paths() -> tuple[Path, Path]:
+    base = Path(__file__).resolve().parent
+    data_db = base / "data" / "honeypots.json"
+    local_db = base / "honeypots.json"
+    md_path = base / "HONEYPOTS.md"
+    if data_db.exists():
+        return data_db, md_path
+    return local_db, md_path
+
+
 def load_honeypot_db() -> tuple[dict[str, str], set[str]]:
     repos = dict(BUILTIN_HONEYPOT_REPOS)
     owners = set(BUILTIN_NOISE_OWNERS)
-    db_path = Path(__file__).resolve().parent / "data" / "honeypots.json"
+    db_path, _ = get_db_paths()
     if db_path.exists():
         try:
             raw = json.loads(db_path.read_text(encoding="utf-8"))
             for item in raw.get("known_honeypot_repos", []):
                 r = item.get("repo", "").lower().strip()
                 if r:
-                    repos[r] = item.get("reason", "Listed in data/honeypots.json")
+                    repos[r] = item.get("reason", "Listed in honeypots.json")
             for o in raw.get("known_malicious_or_noise_owners", []):
                 if o:
                     owners.add(o.lower().strip())
         except Exception:
             pass
     return repos, owners
+
+
+def render_honeypots_markdown(db: dict[str, Any]) -> str:
+    repos = db.get("known_honeypot_repos", [])
+    owners = db.get("known_malicious_or_noise_owners", [])
+    verified = db.get("known_verified_bounty_orgs", [])
+    lines = [
+        "# 📋 Published GitHub Bounty Honeypot & Trap Registry (`HONEYPOTS.md`)",
+        "",
+        f"> **Version:** `{db.get('version', 'latest')}` | **Total Tracked Trap Repos:** `{len(repos)}` | **Blocked Owners:** `{len(owners)}` | **Verified Payer Orgs:** `{len(verified)}`",
+        ">",
+        "> **Machine-Readable JSON Feed:** [`data/honeypots.json`](https://raw.githubusercontent.com/doomsday-network/bounty-guard/main/data/honeypots.json)",
+        "",
+        "This published registry is automatically generated from [`data/honeypots.json`](data/honeypots.json) and can be updated anytime via:",
+        "```bash",
+        "# Scan GitHub for new traps and automatically append them to data/honeypots.json + HONEYPOTS.md:",
+        "python bounty_guard.py scan --update-db",
+        "",
+        "# Or manually add a newly discovered trap repository:",
+        "python bounty_guard.py add owner/repo --category prompt-injection-honeypot --severity critical --reason \"Description\"",
+        "```",
+        "",
+        "---",
+        "",
+        "## 🚨 Confirmed Honeypot, Bot-Trap & Fake Bounty Repositories",
+        "",
+        "| Repository | Category | Severity | Evidence / Reason |",
+        "| :--- | :--- | :--- | :--- |",
+    ]
+    for item in repos:
+        r = item["repo"]
+        cat = item.get("category", "unknown")
+        sev = item.get("severity", "high").upper()
+        reason = item.get("reason", "").replace("|", "\\|")
+        lines.append(f"| `{r}` | `{cat}` | **{sev}** | {reason} |")
+
+    lines.extend([
+        "",
+        "---",
+        "",
+        "## 🚫 Blocked Malicious / Synthetic Farm Owners",
+        "",
+        ", ".join(f"`{o}`" for o in sorted(owners)),
+        "",
+        "---",
+        "",
+        "## ✅ Known Verified Open-Source Bounty Payer Organizations",
+        "",
+        ", ".join(f"[`{v}`](https://github.com/{v})" for v in verified),
+        "",
+        "---",
+        "",
+        "*Maintained by [Doomsday Network (`DOOM` / `wDOOM`)](https://doomsday.network).*",
+        "",
+    ])
+    return "\n".join(lines)
+
+
+def add_repo_to_db(repo: str, category: str, severity: str, reason: str) -> bool:
+    db_path, md_path = get_db_paths()
+    if not db_path.exists():
+        return False
+    raw = json.loads(db_path.read_text(encoding="utf-8"))
+    existing = {item.get("repo", "").lower() for item in raw.get("known_honeypot_repos", [])}
+    repo_clean = repo.strip()
+    if repo_clean.lower() in existing:
+        return False
+    raw.setdefault("known_honeypot_repos", []).append({
+        "repo": repo_clean,
+        "category": category,
+        "severity": severity.lower(),
+        "reason": reason,
+    })
+    owner = repo_clean.split("/")[0].lower()
+    owners_list = raw.setdefault("known_malicious_or_noise_owners", [])
+    if owner not in [o.lower() for o in owners_list]:
+        owners_list.append(owner)
+    now = datetime.datetime.now(datetime.timezone.utc)
+    raw["updated_at"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    db_path.write_text(json.dumps(raw, indent=2) + "\n", encoding="utf-8")
+    if md_path.parent.exists():
+        md_path.write_text(render_honeypots_markdown(raw), encoding="utf-8")
+    return True
 
 
 def get_github_token() -> str | None:
@@ -178,7 +313,7 @@ def get_github_token() -> str | None:
 def gh_get(endpoint: str) -> Any:
     url = endpoint if endpoint.startswith("http") else f"https://api.github.com{endpoint}"
     headers = {
-        "User-Agent": "Doomsday-Bounty-Guard/1.0 (+https://github.com/doomsday-network/bounty-guard)",
+        "User-Agent": "Doomsday-Bounty-Guard/1.1 (+https://github.com/doomsday-network/bounty-guard)",
         "Accept": "application/vnd.github+json",
     }
     token = get_github_token()
@@ -309,7 +444,7 @@ def vet_target(target: str, inspect_files: bool = True) -> dict[str, Any]:
     }
 
 
-def scan_github_bounties(limit: int = 20) -> dict[str, list[dict[str, Any]]]:
+def scan_github_bounties(limit: int = 20, update_db: bool = False) -> dict[str, Any]:
     honeypot_repos, noise_owners = load_honeypot_db()
     queries = [
         'is:issue is:open label:"💎 Bounty"',
@@ -318,6 +453,7 @@ def scan_github_bounties(limit: int = 20) -> dict[str, list[dict[str, Any]]]:
     ]
     safe_items: list[dict[str, Any]] = []
     quarantined_items: list[dict[str, Any]] = []
+    newly_added_repos: list[str] = []
     seen: set[str] = set()
 
     for q in queries:
@@ -336,7 +472,8 @@ def scan_github_bounties(limit: int = 20) -> dict[str, list[dict[str, Any]]]:
 
             repo_url = item.get("repository_url", "")
             parts = repo_url.rstrip("/").split("/")[-2:]
-            repo_full = "/".join(parts).lower() if len(parts) == 2 else ""
+            repo_display = "/".join(parts) if len(parts) == 2 else ""
+            repo_full = repo_display.lower()
             owner_lower = parts[0].lower() if parts else ""
 
             title = item.get("title") or ""
@@ -349,12 +486,13 @@ def scan_github_bounties(limit: int = 20) -> dict[str, list[dict[str, Any]]]:
                 findings.append({"reason": honeypot_repos[repo_full], "weight": 100})
             elif owner_lower in noise_owners:
                 findings.append({"reason": f"Blocked synthetic/trap owner: {owner_lower}", "weight": 85})
-            findings.extend(evaluate_text_risk(combined))
+            text_findings = evaluate_text_risk(combined)
+            findings.extend(text_findings)
 
             score = min(100, sum(f["weight"] for f in findings))
             entry = {
                 "url": html_url,
-                "repository": "/".join(parts),
+                "repository": repo_display,
                 "title": title,
                 "labels": labels,
                 "risk_score": score,
@@ -363,10 +501,19 @@ def scan_github_bounties(limit: int = 20) -> dict[str, list[dict[str, Any]]]:
             }
             if score >= 50:
                 quarantined_items.append(entry)
+                if update_db and repo_display and repo_full not in honeypot_repos:
+                    reason_str = "; ".join(f["reason"] for f in text_findings) or "Quarantined during automated scan"
+                    if add_repo_to_db(repo_display, "prompt-injection-honeypot", "high", reason_str):
+                        honeypot_repos[repo_full] = reason_str
+                        newly_added_repos.append(repo_display)
             else:
                 safe_items.append(entry)
 
-    return {"safe": safe_items[:limit], "quarantined": quarantined_items}
+    return {
+        "safe": safe_items[:limit],
+        "quarantined": quarantined_items,
+        "newly_added_to_db": newly_added_repos,
+    }
 
 
 def main() -> int:
@@ -383,7 +530,14 @@ def main() -> int:
 
     p_scan = sub.add_parser("scan", help="Scan GitHub for live open bounties while quarantining honeypots")
     p_scan.add_argument("--limit", type=int, default=15, help="Max safe bounties to display")
+    p_scan.add_argument("--update-db", action="store_true", help="Automatically append newly caught trap repos to data/honeypots.json & HONEYPOTS.md")
     p_scan.add_argument("--json", help="Write full scan report to JSON file")
+
+    p_add = sub.add_parser("add", help="Add a newly discovered honeypot/trap repository to data/honeypots.json and regenerate HONEYPOTS.md")
+    p_add.add_argument("repo", help="GitHub owner/repo")
+    p_add.add_argument("--category", default="prompt-injection-honeypot", help="Category (prompt-injection-honeypot, bot-trap-blocklist, canonical-impersonation-trap, synthetic-fake-bounty)")
+    p_add.add_argument("--severity", default="high", help="Severity (critical, high, medium)")
+    p_add.add_argument("--reason", required=True, help="Evidence / reason for blocking")
 
     args = parser.parse_args()
 
@@ -412,12 +566,14 @@ def main() -> int:
         return 2 if result["verdict"] == "QUARANTINE" else 0
 
     if args.cmd == "scan":
-        report = scan_github_bounties(limit=args.limit)
+        report = scan_github_bounties(limit=args.limit, update_db=args.update_db)
         if args.json:
             Path(args.json).write_text(json.dumps(report, indent=2), encoding="utf-8")
         print("=" * 72)
         print(" BOUNTY-GUARD LIVE GITHUB SCANNER")
         print(f" Safe Bounties Found: {len(report['safe'])} | Quarantined Traps: {len(report['quarantined'])}")
+        if report.get("newly_added_to_db"):
+            print(f" Auto-Added to Published DB: {', '.join(report['newly_added_to_db'])}")
         print("=" * 72)
         for item in report["safe"]:
             badge = " [VERIFIED ORG]" if item["verified_org"] else ""
@@ -430,6 +586,14 @@ def main() -> int:
                 reasons = "; ".join(f["reason"] for f in q["findings"])
                 print(f"  [BLOCKED score={q['risk_score']}] [{q['repository']}] {q['title']}")
                 print(f"    Reason: {reasons}")
+        return 0
+
+    if args.cmd == "add":
+        added = add_repo_to_db(args.repo, args.category, args.severity, args.reason)
+        if added:
+            print(f"[+] Added {args.repo} to data/honeypots.json and updated HONEYPOTS.md")
+        else:
+            print(f"[i] {args.repo} is already present in data/honeypots.json")
         return 0
 
     return 0
