@@ -1,6 +1,6 @@
 # 📋 Published GitHub Bounty Honeypot & Trap Registry (`HONEYPOTS.md`)
 
-> **Version:** `2026.10.20.2` | **Total Tracked Trap Repos:** `29` | **Blocked Owners:** `28` | **Verified Payer Orgs:** `16`
+> **Version:** `2026.10.20.2` | **Total Tracked Trap Repos:** `30` | **Blocked Owners:** `29` | **Verified Payer Orgs:** `16`
 >
 > **Machine-Readable JSON Feed:** [`data/honeypots.json`](https://raw.githubusercontent.com/doomsday-network/bounty-guard/main/data/honeypots.json)
 
@@ -48,12 +48,13 @@ python bounty_guard.py add owner/repo --category prompt-injection-honeypot --sev
 | `Vicentegg4212/sasmex-rss-bounty` | `synthetic-fake-bounty` | **HIGH** | Freshly minted repo advertising unescrowed bounty issues. |
 | `chouhanindustries/copperhead` | `synthetic-fake-bounty` | **HIGH** | Unescrowed bounty trap with no maintainer payout history. |
 | `theselfish/SlopStation13` | `synthetic-fake-bounty` | **MEDIUM** | Unverified synthetic bounty issues. |
+| `Asayed36/trading-bot` | `prompt-injection-honeypot` | **HIGH** | Canonical bot-bait task signature ('calculate pi' / 'clanker' trap) |
 
 ---
 
 ## 🚫 Blocked Malicious / Synthetic Farm Owners
 
-`bountyscout`, `charles-microbounties`, `charles-openclaw`, `chouhanindustries`, `clankernation`, `danielioni-creator`, `jaasielitaigq`, `jahmeergnlt`, `kyresehk190`, `madalynerlge2`, `mergework`, `myzubster-ecosystem`, `oss-hunter-livefire`, `p1ngtoohigh`, `raimeecas`, `relayhop`, `rustchain`, `securebananalabs`, `senthemodder`, `sn-monetization-runtime`, `tine1117`, `uid9622`, `unsafelabs`, `vicentegg4212`, `willsmithte`, `xevrion-v2`, `zamariyahg`, `zhangjiayang6835-cyber`
+`asayed36`, `bountyscout`, `charles-microbounties`, `charles-openclaw`, `chouhanindustries`, `clankernation`, `danielioni-creator`, `jaasielitaigq`, `jahmeergnlt`, `kyresehk190`, `madalynerlge2`, `mergework`, `myzubster-ecosystem`, `oss-hunter-livefire`, `p1ngtoohigh`, `raimeecas`, `relayhop`, `rustchain`, `securebananalabs`, `senthemodder`, `sn-monetization-runtime`, `tine1117`, `uid9622`, `unsafelabs`, `vicentegg4212`, `willsmithte`, `xevrion-v2`, `zamariyahg`, `zhangjiayang6835-cyber`
 
 ---
 

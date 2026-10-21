@@ -1,6 +1,6 @@
 {
   "version": "2026.10.20.2",
-  "updated_at": "2026-10-20T21:10:00Z",
+  "updated_at": "2026-10-21T00:29:34Z",
   "maintainer": "Doomsday Network Security (https://doomsday.network)",
   "license": "MIT",
   "description": "Continuously updated open-source threat intelligence feed of GitHub repositories, owners, and signatures used as AI coding agent prompt-injection honeypots, clanker-blocklist traps, canonical repo impersonators, and synthetic fake bounty boards.",
@@ -178,6 +178,12 @@
       "category": "synthetic-fake-bounty",
       "severity": "medium",
       "reason": "Unverified synthetic bounty issues."
+    },
+    {
+      "repo": "Asayed36/trading-bot",
+      "category": "prompt-injection-honeypot",
+      "severity": "high",
+      "reason": "Canonical bot-bait task signature ('calculate pi' / 'clanker' trap)"
     }
   ],
   "known_malicious_or_noise_owners": [
@@ -208,7 +214,8 @@
     "bountyscout",
     "sn-monetization-runtime",
     "mergework",
-    "rustchain"
+    "rustchain",
+    "asayed36"
   ],
   "known_verified_bounty_orgs": [
     "BasedHardware",
