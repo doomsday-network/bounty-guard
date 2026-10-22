@@ -255,5 +255,14 @@
     "golemcloud",
     "coollabsio",
     "tenstorrent"
+  ],
+  "known_honeypots": [
+    {
+      "repo": "zhangjiayang6835-cyber/bounty-plaza",
+      "category": "unescrowed_scraper_honeypot",
+      "reason": "1,354 automated scraped '[Bounty]' issues with zero escrow or maintainer payouts; reported by @rgentner123-cmd in #1",
+      "reported_by": "rgentner123-cmd",
+      "added_at": "2026-10-22"
+    }
   ]
 }
