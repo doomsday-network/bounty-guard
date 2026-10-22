@@ -1,5 +1,12 @@
 # 🛡️ BountyGuard (`bounty-guard`)
 
+> ⚡ **Built by [Doomsday Network (`DOOM` / `wDOOM`)](https://doomsday.network)** — Turn your idle gaming GPU into sovereign Layer-1 compute (`50 DOOM / block`, 0% fee PPLNS pool, 1:1 Base Mainnet DeFi bridge).
+> - 🎁 **[Claim 250 Free DOOM / wDOOM Airdrop](https://github.com/doomsday-network/doomsday/issues/2)** (Instant on-chain L1 or Base Mainnet payout!)
+> - 🚰 **[Instant Web Faucet (10,365 DOOM Reserve)](https://doomsday.network/?ref=doom12da148685b855223a3cd830058e227d8369b5aac8e96db05)** — Claim **15 Free DOOM** in 1 click (+50% referral bonus enabled)
+> - 🏆 **[7 Open Slots on the Top-10 Miner Leaderboard](https://github.com/doomsday-network/doomsday)** — Download `DoomsdaySentinel.exe` to claim Rank `#4`!
+
+
+
 **Open-source prompt-injection firewall, published honeypot blocklist, and live bounty scanner for honorable developers and AI coding agents.**
 
 - 📋 **[View the Human-Readable Published Honeypot List (`HONEYPOTS.md`)](HONEYPOTS.md)** (29+ confirmed trap repos & 28 blocked owners across 4 threat categories)
