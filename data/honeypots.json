@@ -1,6 +1,6 @@
 {
   "version": "2026.10.20.2",
-  "updated_at": "2026-10-21T00:29:34Z",
+  "updated_at": "2026-10-22T17:17:59Z",
   "maintainer": "Doomsday Network Security (https://doomsday.network)",
   "license": "MIT",
   "description": "Continuously updated open-source threat intelligence feed of GitHub repositories, owners, and signatures used as AI coding agent prompt-injection honeypots, clanker-blocklist traps, canonical repo impersonators, and synthetic fake bounty boards.",
@@ -184,6 +184,24 @@
       "category": "prompt-injection-honeypot",
       "severity": "high",
       "reason": "Canonical bot-bait task signature ('calculate pi' / 'clanker' trap)"
+    },
+    {
+      "repo": "NSPG13/agent-bounties",
+      "category": "synthetic-fake-bounty",
+      "severity": "high",
+      "reason": "Automated synthetic '[Bounty]' and '[DIRECT]' issue farm generating hundreds of unbacked agent tasks mirrored into bounty-plaza."
+    },
+    {
+      "repo": "jomaaabbe78-spec/bookningsapp",
+      "category": "synthetic-fake-bounty",
+      "severity": "medium",
+      "reason": "Throwaway '[TEST BOUNTY] Fix typo in README' () bait repository mirrored by bounty-plaza (#4061) with no escrow or payout rail."
+    },
+    {
+      "repo": "OmniBlocks/bountyfarmer",
+      "category": "bot-trap-blocklist",
+      "severity": "high",
+      "reason": "Bait issue (#56 ' DOOLAR BOUNTY IF YOU CAN ADD STATUS METER TO README') targeting automated bounty-hunting agents."
     }
   ],
   "known_malicious_or_noise_owners": [
@@ -215,7 +233,10 @@
     "sn-monetization-runtime",
     "mergework",
     "rustchain",
-    "asayed36"
+    "asayed36",
+    "nspg13",
+    "jomaaabbe78-spec",
+    "omniblocks"
   ],
   "known_verified_bounty_orgs": [
     "BasedHardware",
