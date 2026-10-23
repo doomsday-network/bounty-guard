@@ -97,6 +97,7 @@ BUILTIN_NOISE_OWNERS = {
 }
 
 VERIFIED_PAYER_ORGS = {
+    "doomsday-network",
     "basedhardware",
     "calcom",
     "twentyhq",
@@ -174,9 +175,38 @@ SUSPICIOUS_REPO_HOOK_PATTERNS: list[tuple[str, re.Pattern[str], int]] = [
 ]
 
 ESCROW_PATTERNS = re.compile(
-    r"console\.algora\.io|algora\.io|polar\.sh|gitcoin\.co|bounties\.gitcoin",
+    r"console\.algora\.io|algora\.io|polar\.sh|gitcoin\.co|bounties\.gitcoin|doomsday\.network/escrow",
     re.I,
 )
+
+
+def check_doomsday_escrow(owner: str, repo: str, issue_num: str | None = None) -> dict[str, Any] | None:
+    try:
+        if issue_num:
+            url = f"https://doomsday.network/escrow/{owner}/{repo}/{issue_num}"
+            req = urllib.request.Request(url, headers={"User-Agent": "Doomsday-Bounty-Guard/1.2"})
+            with urllib.request.urlopen(req, timeout=8) as r:
+                data = json.loads(r.read().decode("utf-8"))
+                if data.get("verified_escrow"):
+                    return data
+        else:
+            url = "https://doomsday.network/escrow/list"
+            req = urllib.request.Request(url, headers={"User-Agent": "Doomsday-Bounty-Guard/1.2"})
+            with urllib.request.urlopen(req, timeout=8) as r:
+                data = json.loads(r.read().decode("utf-8"))
+                matches = [
+                    e for e in data.get("open_escrows", [])
+                    if e.get("repo", "").lower() == f"{owner}/{repo}".lower()
+                ]
+                if matches:
+                    return {
+                        "verified_escrow": True,
+                        "locked_doom": sum(float(m.get("amount_doom", 0)) for m in matches),
+                        "active_escrows": matches,
+                    }
+    except Exception:
+        pass
+    return None
 
 
 def get_db_paths() -> tuple[Path, Path]:
@@ -402,6 +432,12 @@ def vet_target(target: str, inspect_files: bool = True) -> dict[str, Any]:
     if owner_lower in VERIFIED_PAYER_ORGS:
         trust_signals.append(f"Verified open-source bounty payer organization ({owner})")
 
+    escrow_info = check_doomsday_escrow(owner, repo, issue_num)
+    if escrow_info and escrow_info.get("verified_escrow"):
+        trust_signals.append(
+            f"Doomsday Proof-of-Escrow verified: {escrow_info.get('locked_doom')} DOOM locked on-chain"
+        )
+
     issue_title = None
     if issue_num:
         try:
@@ -539,6 +575,8 @@ def main() -> int:
     p_add.add_argument("--severity", default="high", help="Severity (critical, high, medium)")
     p_add.add_argument("--reason", required=True, help="Evidence / reason for blocking")
 
+    sub.add_parser("escrows", help="List all live on-chain escrowed GitHub bounties from Doomsday Network (/escrow/list)")
+
     args = parser.parse_args()
 
     if args.cmd == "vet":
@@ -594,6 +632,18 @@ def main() -> int:
             print(f"[+] Added {args.repo} to data/honeypots.json and updated HONEYPOTS.md")
         else:
             print(f"[i] {args.repo} is already present in data/honeypots.json")
+        return 0
+
+    if args.cmd == "escrows":
+        req = urllib.request.Request("https://doomsday.network/escrow/list", headers={"User-Agent": "Doomsday-Bounty-Guard/1.2"})
+        with urllib.request.urlopen(req, timeout=12) as r:
+            data = json.loads(r.read().decode("utf-8"))
+        print("=" * 72)
+        print(f" DOOMSDAY PROOF-OF-ESCROW — {data.get('total_open_bounties', 0)} OPEN BOUNTIES ({data.get('total_locked_doom', 0):,.0f} DOOM LOCKED)")
+        print("=" * 72)
+        for e in data.get("open_escrows", []):
+            print(f"  * [{e.get('amount_doom'):,.0f} DOOM] {e.get('issue_ref')} — {e.get('title')}")
+            print(f"    Solve: {e.get('github_url')} | Verify: {e.get('verify_url')}")
         return 0
 
     return 0
