@@ -46,4 +46,4 @@ python bounty_guard.py add owner/repo --category prompt-injection-honeypot --sev
 
 ## 🌐 Maintained By
 
-Built and maintained by the open-source contributors at **[Doomsday Network (`DOOM` / `wDOOM`)](https://doomsday.network)** — an authentic, open-source Proof-of-Work & Proof-of-Useful-Work blockchain (`wDOOM` on Base Mainnet: `0x930A51b09612A75e2C9640111f6632D094d5a781`).
+Built and maintained by the open-source contributors at **[Doomsday Network (`DOOM` / `wDOOM`)](https://doomsday.network)** — an authentic, open-source Proof-of-Work & Proof-of-Useful-Work blockchain (`wDOOM` on Base Mainnet: `0x623c84A5E04bF715018203334b0eFE41696eBC3E`).
