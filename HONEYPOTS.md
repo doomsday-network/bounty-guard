@@ -1,6 +1,6 @@
 # 📋 Published GitHub Bounty Honeypot & Trap Registry (`HONEYPOTS.md`)
 
-> **Version:** `2026.10.20.2` | **Total Tracked Trap Repos:** `34` | **Blocked Owners:** `33` | **Verified Payer Orgs:** `16`
+> **Version:** `2026.10.23.1` | **Total Tracked Trap Repos:** `33` | **Blocked Owners:** `32` | **Verified Payer Orgs:** `17`
 >
 > **Machine-Readable JSON Feed:** [`data/honeypots.json`](https://raw.githubusercontent.com/doomsday-network/bounty-guard/main/data/honeypots.json)
 
@@ -52,19 +52,18 @@ python bounty_guard.py add owner/repo --category prompt-injection-honeypot --sev
 | `NSPG13/agent-bounties` | `synthetic-fake-bounty` | **HIGH** | Automated synthetic '[Bounty]' and '[DIRECT]' issue farm generating hundreds of unbacked agent tasks mirrored into bounty-plaza. |
 | `jomaaabbe78-spec/bookningsapp` | `synthetic-fake-bounty` | **MEDIUM** | Throwaway '[TEST BOUNTY] Fix typo in README' () bait repository mirrored by bounty-plaza (#4061) with no escrow or payout rail. |
 | `OmniBlocks/bountyfarmer` | `bot-trap-blocklist` | **HIGH** | Bait issue (#56 ' DOOLAR BOUNTY IF YOU CAN ADD STATUS METER TO README') targeting automated bounty-hunting agents. |
-| `doomsday-network/bounty-guard` | `prompt-injection-honeypot` | **HIGH** | Canonical bot-bait task signature ('calculate pi' / 'clanker' trap) |
 
 ---
 
 ## 🚫 Blocked Malicious / Synthetic Farm Owners
 
-`asayed36`, `bountyscout`, `charles-microbounties`, `charles-openclaw`, `chouhanindustries`, `clankernation`, `danielioni-creator`, `doomsday-network`, `jaasielitaigq`, `jahmeergnlt`, `jomaaabbe78-spec`, `kyresehk190`, `madalynerlge2`, `mergework`, `myzubster-ecosystem`, `nspg13`, `omniblocks`, `oss-hunter-livefire`, `p1ngtoohigh`, `raimeecas`, `relayhop`, `rustchain`, `securebananalabs`, `senthemodder`, `sn-monetization-runtime`, `tine1117`, `uid9622`, `unsafelabs`, `vicentegg4212`, `willsmithte`, `xevrion-v2`, `zamariyahg`, `zhangjiayang6835-cyber`
+`asayed36`, `bountyscout`, `charles-microbounties`, `charles-openclaw`, `chouhanindustries`, `clankernation`, `danielioni-creator`, `jaasielitaigq`, `jahmeergnlt`, `jomaaabbe78-spec`, `kyresehk190`, `madalynerlge2`, `mergework`, `myzubster-ecosystem`, `nspg13`, `omniblocks`, `oss-hunter-livefire`, `p1ngtoohigh`, `raimeecas`, `relayhop`, `rustchain`, `securebananalabs`, `senthemodder`, `sn-monetization-runtime`, `tine1117`, `uid9622`, `unsafelabs`, `vicentegg4212`, `willsmithte`, `xevrion-v2`, `zamariyahg`, `zhangjiayang6835-cyber`
 
 ---
 
 ## ✅ Known Verified Open-Source Bounty Payer Organizations
 
-[`BasedHardware`](https://github.com/BasedHardware), [`calcom`](https://github.com/calcom), [`twentyhq`](https://github.com/twentyhq), [`formbricks`](https://github.com/formbricks), [`triggerdotdev`](https://github.com/triggerdotdev), [`medusajs`](https://github.com/medusajs), [`activepieces`](https://github.com/activepieces), [`juspay`](https://github.com/juspay), [`remotion-dev`](https://github.com/remotion-dev), [`Infisical`](https://github.com/Infisical), [`antiwork`](https://github.com/antiwork), [`tscircuit`](https://github.com/tscircuit), [`zio`](https://github.com/zio), [`golemcloud`](https://github.com/golemcloud), [`coollabsio`](https://github.com/coollabsio), [`tenstorrent`](https://github.com/tenstorrent)
+[`doomsday-network`](https://github.com/doomsday-network), [`BasedHardware`](https://github.com/BasedHardware), [`calcom`](https://github.com/calcom), [`twentyhq`](https://github.com/twentyhq), [`formbricks`](https://github.com/formbricks), [`triggerdotdev`](https://github.com/triggerdotdev), [`medusajs`](https://github.com/medusajs), [`activepieces`](https://github.com/activepieces), [`juspay`](https://github.com/juspay), [`remotion-dev`](https://github.com/remotion-dev), [`Infisical`](https://github.com/Infisical), [`antiwork`](https://github.com/antiwork), [`tscircuit`](https://github.com/tscircuit), [`zio`](https://github.com/zio), [`golemcloud`](https://github.com/golemcloud), [`coollabsio`](https://github.com/coollabsio), [`tenstorrent`](https://github.com/tenstorrent)
 
 ---
 

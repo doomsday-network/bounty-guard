@@ -301,7 +301,8 @@ def add_repo_to_db(repo: str, category: str, severity: str, reason: str) -> bool
     raw = json.loads(db_path.read_text(encoding="utf-8"))
     existing = {item.get("repo", "").lower() for item in raw.get("known_honeypot_repos", [])}
     repo_clean = repo.strip()
-    if repo_clean.lower() in existing:
+    owner_check = repo_clean.split("/")[0].lower() if "/" in repo_clean else ""
+    if repo_clean.lower() in existing or owner_check in VERIFIED_PAYER_ORGS:
         return False
     raw.setdefault("known_honeypot_repos", []).append({
         "repo": repo_clean,
@@ -446,7 +447,8 @@ def vet_target(target: str, inspect_files: bool = True) -> dict[str, Any]:
             body = issue_data.get("body") or ""
             labels = " ".join(lbl.get("name", "") for lbl in issue_data.get("labels", []))
             combined = f"{issue_title}\n{labels}\n{body}"
-            findings.extend(evaluate_text_risk(combined))
+            if owner_lower not in VERIFIED_PAYER_ORGS:
+                findings.extend(evaluate_text_risk(combined))
             if ESCROW_PATTERNS.search(combined):
                 trust_signals.append("Escrow/platform reference detected (Algora / Polar / Gitcoin)")
         except urllib.error.HTTPError as exc:
@@ -522,7 +524,7 @@ def scan_github_bounties(limit: int = 20, update_db: bool = False) -> dict[str, 
                 findings.append({"reason": honeypot_repos[repo_full], "weight": 100})
             elif owner_lower in noise_owners:
                 findings.append({"reason": f"Blocked synthetic/trap owner: {owner_lower}", "weight": 85})
-            text_findings = evaluate_text_risk(combined)
+            text_findings = [] if owner_lower in VERIFIED_PAYER_ORGS else evaluate_text_risk(combined)
             findings.extend(text_findings)
 
             score = min(100, sum(f["weight"] for f in findings))
