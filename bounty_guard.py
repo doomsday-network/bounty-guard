@@ -463,12 +463,20 @@ def vet_target(target: str, inspect_files: bool = True) -> dict[str, Any]:
     else:
         risk_score = min(100, raw_score)
 
+    has_verified_escrow = bool(
+        (escrow_info and escrow_info.get("verified_escrow"))
+        or any("Escrow/platform reference detected" in s for s in trust_signals)
+    )
+
     if risk_score >= 50:
         verdict = "QUARANTINE"
+        classification = "QUARANTINE"
     elif risk_score >= 20:
         verdict = "CAUTION"
+        classification = "QUARANTINE"
     else:
         verdict = "SAFE"
+        classification = "SAFE_WITH_ESCROW" if has_verified_escrow else "SAFE_NO_ESCROW"
 
     return {
         "target": target,
@@ -476,10 +484,46 @@ def vet_target(target: str, inspect_files: bool = True) -> dict[str, Any]:
         "issue_number": int(issue_num) if issue_num else None,
         "issue_title": issue_title,
         "verdict": verdict,
+        "classification": classification,
+        "has_escrow": has_verified_escrow,
         "risk_score": risk_score,
         "findings": findings,
         "trust_signals": trust_signals,
     }
+
+
+def classify_targets(targets: list[str], inspect_files: bool = True) -> list[dict[str, Any]]:
+    """Classify one or more GitHub issues/repos into SAFE_WITH_ESCROW, SAFE_NO_ESCROW, or QUARANTINE."""
+    return [vet_target(t, inspect_files=inspect_files) for t in targets]
+
+
+def render_classification_table(results: list[dict[str, Any]]) -> str:
+    """Render a 3-column Markdown table summarizing empirical bounty classifications."""
+    lines = [
+        "| Target Issue / Repo | Classification | Escrow / Trap Evidence |",
+        "| :--- | :--- | :--- |",
+    ]
+    for r in results:
+        ref = r["repository"]
+        if r.get("issue_number"):
+            ref = f"{ref}#{r['issue_number']}"
+        classification = r.get("classification", "QUARANTINE" if r.get("verdict") != "SAFE" else "SAFE_NO_ESCROW")
+        if classification == "QUARANTINE":
+            reasons = "; ".join(
+                f"{f['reason']} ({f.get('evidence', '')})" if f.get("evidence") else f["reason"]
+                for f in r.get("findings", [])
+            ) or f"Risk score {r.get('risk_score', 0)}/100"
+            evidence = reasons.replace("|", "\\|")
+        elif classification == "SAFE_WITH_ESCROW":
+            signals = "; ".join(r.get("trust_signals", [])) or "Verified escrow lock detected"
+            evidence = signals.replace("|", "\\|")
+        else:
+            signals = "; ".join(r.get("trust_signals", []))
+            base_msg = "No prompt-injection or honeypot signatures detected; unescrowed prior to merge"
+            evidence = f"{signals}; {base_msg}" if signals else base_msg
+            evidence = evidence.replace("|", "\\|")
+        lines.append(f"| `{ref}` | `{classification}` | {evidence} |")
+    return "\n".join(lines)
 
 
 def scan_github_bounties(limit: int = 20, update_db: bool = False) -> dict[str, Any]:
@@ -579,6 +623,11 @@ def main() -> int:
 
     sub.add_parser("escrows", help="List all live on-chain escrowed GitHub bounties from Doomsday Network (/escrow/list)")
 
+    p_cls = sub.add_parser("classify", help="Classify 1+ GitHub issues/repos into SAFE_WITH_ESCROW, SAFE_NO_ESCROW, or QUARANTINE")
+    p_cls.add_argument("targets", nargs="+", help="GitHub Issue/PR URLs or owner/repo strings")
+    p_cls.add_argument("--no-files", action="store_true", help="Skip remote repo file surface check")
+    p_cls.add_argument("--json", action="store_true", help="Output machine-readable JSON")
+
     args = parser.parse_args()
 
     if args.cmd == "vet":
@@ -646,6 +695,14 @@ def main() -> int:
         for e in data.get("open_escrows", []):
             print(f"  * [{e.get('amount_doom'):,.0f} DOOM] {e.get('issue_ref')} — {e.get('title')}")
             print(f"    Solve: {e.get('github_url')} | Verify: {e.get('verify_url')}")
+        return 0
+
+    if args.cmd == "classify":
+        results = classify_targets(args.targets, inspect_files=not args.no_files)
+        if args.json:
+            print(json.dumps(results, indent=2))
+        else:
+            print(render_classification_table(results))
         return 0
 
     return 0
