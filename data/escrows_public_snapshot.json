@@ -1,23 +1,9 @@
 {
   "protocol": "Doomsday Proof-of-Escrow v1",
   "escrow_vault_address": "doom1caea0957fb471c2b83940cc2feb421abad938dfbdef662de",
-  "escrow_vault_reserve_doom": 34960.0,
+  "escrow_vault_reserve_doom": 32960.0,
   "vault_utxo_verified": true,
   "escrow_vault_utxo_proofs": [
-    {
-      "txid": "8b26b445b820bfe85e151cad6e4de221269cbbab5ddde5b89bbc059b13b2a687",
-      "vout": 1,
-      "amount": 199000000000,
-      "amount_sparks": 199000000000,
-      "amount_doom": 1990.0
-    },
-    {
-      "txid": "67925174ff47ca27a781454622e97735cac3168d0ac62bb190a68d626abde554",
-      "vout": 1,
-      "amount": 150000000000,
-      "amount_sparks": 150000000000,
-      "amount_doom": 1500.0
-    },
     {
       "txid": "1942eb78115fe6c2e8225026b43e1efe7abcb8092c54eb97da7975435e601b7b",
       "vout": 2,
@@ -73,14 +59,28 @@
       "amount": 250000000000,
       "amount_sparks": 250000000000,
       "amount_doom": 2500.0
+    },
+    {
+      "txid": "5ba99f30bbed7760dbc2dc216f8f3d6734824b215043229d57b07a15facda582",
+      "vout": 3,
+      "amount": 250000000000,
+      "amount_sparks": 250000000000,
+      "amount_doom": 2500.0
+    },
+    {
+      "txid": "5ba99f30bbed7760dbc2dc216f8f3d6734824b215043229d57b07a15facda582",
+      "vout": 4,
+      "amount": 250000000000,
+      "amount_sparks": 250000000000,
+      "amount_doom": 2500.0
     }
   ],
   "wdoom_base_contract": "0x623c84A5E04bF715018203334b0eFE41696eBC3E",
   "uniswap_v3_pool": "0xf7217329574249d7b389404aECF2C582662F3659",
   "total_open_bounties": 10,
   "total_locked_doom": 13750.0,
-  "total_settled_bounties": 18,
-  "total_settled_doom": 22500.0,
+  "total_settled_bounties": 20,
+  "total_settled_doom": 24500.0,
   "open_escrows": [
     {
       "escrow_id": "escrow_doom_0009",
@@ -254,6 +254,26 @@
     }
   ],
   "settled_escrows": [
+    {
+      "escrow_id": "settled_dextermos-dev_1792742852",
+      "issue_ref": "doomsday-network/bounty-guard#5",
+      "solver_github": "dextermos-dev",
+      "recipient_wallet": "0x8366bCe3a2D379De7656D7A67015789FaF999f20",
+      "amount_doom": 1500.0,
+      "chain": "Base Mainnet (wDOOM)",
+      "settlement_tx": "f054e6427aa7b480fcda26d2b937427136658a60390b7b68fd5bc00f53e1a833",
+      "status": "SETTLED"
+    },
+    {
+      "escrow_id": "settled_dextermos-dev_1792742839",
+      "issue_ref": "doomsday-network/doomsday#4",
+      "solver_github": "dextermos-dev",
+      "recipient_wallet": "0x8366bCe3a2D379De7656D7A67015789FaF999f20",
+      "amount_doom": 500.0,
+      "chain": "Base Mainnet (wDOOM)",
+      "settlement_tx": "7b715e3ee63138b168bc02f51330fa1898bcba1cd9841be524b2af25cfbd2588",
+      "status": "SETTLED"
+    },
     {
       "escrow_id": "settled_ub3dqy_1792726949",
       "issue_ref": "doomsday-network/bounty-guard#5",
