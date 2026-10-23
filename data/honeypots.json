@@ -1,6 +1,6 @@
 {
   "version": "2026.10.20.2",
-  "updated_at": "2026-10-22T17:17:59Z",
+  "updated_at": "2026-10-23T00:31:49Z",
   "maintainer": "Doomsday Network Security (https://doomsday.network)",
   "license": "MIT",
   "description": "Continuously updated open-source threat intelligence feed of GitHub repositories, owners, and signatures used as AI coding agent prompt-injection honeypots, clanker-blocklist traps, canonical repo impersonators, and synthetic fake bounty boards.",
@@ -202,6 +202,12 @@
       "category": "bot-trap-blocklist",
       "severity": "high",
       "reason": "Bait issue (#56 ' DOOLAR BOUNTY IF YOU CAN ADD STATUS METER TO README') targeting automated bounty-hunting agents."
+    },
+    {
+      "repo": "doomsday-network/bounty-guard",
+      "category": "prompt-injection-honeypot",
+      "severity": "high",
+      "reason": "Canonical bot-bait task signature ('calculate pi' / 'clanker' trap)"
     }
   ],
   "known_malicious_or_noise_owners": [
@@ -236,7 +242,8 @@
     "asayed36",
     "nspg13",
     "jomaaabbe78-spec",
-    "omniblocks"
+    "omniblocks",
+    "doomsday-network"
   ],
   "known_verified_bounty_orgs": [
     "BasedHardware",
