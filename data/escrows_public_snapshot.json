@@ -1,16 +1,9 @@
 {
   "protocol": "Doomsday Proof-of-Escrow v1",
   "escrow_vault_address": "doom1caea0957fb471c2b83940cc2feb421abad938dfbdef662de",
-  "escrow_vault_reserve_doom": 36460.0,
+  "escrow_vault_reserve_doom": 34960.0,
   "vault_utxo_verified": true,
   "escrow_vault_utxo_proofs": [
-    {
-      "txid": "d4db86eac4b743f7ebf6292580d423e195bd496ab543341d746945a5aecde717",
-      "vout": 1,
-      "amount": 175000000000,
-      "amount_sparks": 175000000000,
-      "amount_doom": 1750.0
-    },
     {
       "txid": "8b26b445b820bfe85e151cad6e4de221269cbbab5ddde5b89bbc059b13b2a687",
       "vout": 1,
@@ -73,14 +66,21 @@
       "amount": 250000000000,
       "amount_sparks": 250000000000,
       "amount_doom": 2500.0
+    },
+    {
+      "txid": "5ba99f30bbed7760dbc2dc216f8f3d6734824b215043229d57b07a15facda582",
+      "vout": 2,
+      "amount": 250000000000,
+      "amount_sparks": 250000000000,
+      "amount_doom": 2500.0
     }
   ],
   "wdoom_base_contract": "0x623c84A5E04bF715018203334b0eFE41696eBC3E",
   "uniswap_v3_pool": "0xf7217329574249d7b389404aECF2C582662F3659",
   "total_open_bounties": 10,
   "total_locked_doom": 13750.0,
-  "total_settled_bounties": 16,
-  "total_settled_doom": 19500.0,
+  "total_settled_bounties": 18,
+  "total_settled_doom": 22500.0,
   "open_escrows": [
     {
       "escrow_id": "escrow_doom_0009",
@@ -255,6 +255,16 @@
   ],
   "settled_escrows": [
     {
+      "escrow_id": "settled_ub3dqy_1792726949",
+      "issue_ref": "doomsday-network/bounty-guard#5",
+      "solver_github": "ub3dqy",
+      "recipient_wallet": "0x6dD17C1D6CAd9D230F92bC193D0cF1D398e0CBD3",
+      "amount_doom": 1500.0,
+      "chain": "Base Mainnet (wDOOM)",
+      "settlement_tx": "d2c0c62d1c5889495b7c5983abc7161d1270859cfc8a84ba92b5d24559724b6e",
+      "status": "SETTLED"
+    },
+    {
       "escrow_id": "settled_rgentner123-cmd_1792720961",
       "issue_ref": "doomsday-network/doomsday#11",
       "solver_github": "rgentner123-cmd",
@@ -412,6 +422,16 @@
       "amount_doom": 500.0,
       "chain": "Base Mainnet (wDOOM)",
       "settlement_tx": "https://basescan.org/tx/0xce3c809b831fffe08c92098ec10da65d90c39596dc40b0ae77a9aacc8fbf0ff2",
+      "status": "SETTLED"
+    },
+    {
+      "escrow_id": "settled_ub3dqy_bg5",
+      "issue_ref": "doomsday-network/bounty-guard#5",
+      "solver_github": "ub3dqy",
+      "recipient_wallet": "0x6dD17C1D6CAd9D230F92bC193D0cF1D398e0CBD3",
+      "amount_doom": 1500.0,
+      "chain": "Base Mainnet (wDOOM)",
+      "settlement_tx": "https://basescan.org/tx/0x8ee536b8a1963eaf9ca3929ca9a25bd55d0f83a3a01173530da588146da1b885",
       "status": "SETTLED"
     }
   ]
