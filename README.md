@@ -38,7 +38,10 @@ python bounty_guard.py vet https://github.com/UnsafeLabs/Bounty-Hunters
 # 2. Scan GitHub for live bounties AND automatically update data/honeypots.json + HONEYPOTS.md with any new traps caught:
 python bounty_guard.py scan --update-db
 
-# 3. Manually add a newly discovered honeypot repo to the published list:
+# 3. Classify 1+ issues into SAFE_WITH_ESCROW, SAFE_NO_ESCROW, or QUARANTINE (outputs Markdown table):
+python bounty_guard.py classify https://github.com/doomsday-network/doomsday/issues/11 https://github.com/Chain-Love/chain-love/issues/4726 https://github.com/Senthemodder/aquarium-of-gullibles/issues/1
+
+# 4. Manually add a newly discovered honeypot repo to the published list:
 python bounty_guard.py add owner/repo --category prompt-injection-honeypot --severity critical --reason "Hidden prompt injection in issue body"
 ```
 
