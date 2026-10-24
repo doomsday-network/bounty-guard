@@ -1,0 +1,26 @@
+name: "BountyGuard — Prompt-Injection & Escrow Scanner"
+description: "Scan GitHub issues, pull requests, and repositories for hidden prompt-injection payloads, CI secret exfiltration traps, and unverified bounty escrow."
+author: "doomsday-network"
+branding:
+  icon: "shield"
+  color: "green"
+inputs:
+  target:
+    description: "GitHub repository (owner/repo), issue (owner/repo#num), URL, or '--demo' to scan"
+    required: false
+    default: "--demo"
+  mode:
+    description: "Scan mode: 'scan', 'classify', or 'escrows'"
+    required: false
+    default: "scan"
+runs:
+  using: "composite"
+  steps:
+    - name: Run BountyGuard Scanner
+      shell: bash
+      run: |
+        if [ "${{ inputs.target }}" = "--demo" ]; then
+          python3 "${{ github.action_path }}/bounty_guard.py" --demo
+        else
+          python3 "${{ github.action_path }}/bounty_guard.py" "${{ inputs.mode }}" "${{ inputs.target }}"
+        fi
