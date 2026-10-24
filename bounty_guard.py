@@ -599,10 +599,26 @@ def scan_github_bounties(limit: int = 20, update_db: bool = False) -> dict[str, 
 
 
 def main() -> int:
+    if "--demo" in sys.argv or (len(sys.argv) > 1 and sys.argv[1] == "demo"):
+        demo_targets = [
+            "https://github.com/doomsday-network/doomsday/issues/11",
+            "https://github.com/Chain-Love/chain-love/issues/4726",
+            "https://github.com/Senthemodder/aquarium-of-gullibles/issues/1",
+        ]
+        results = classify_targets(demo_targets, inspect_files=False)
+        print(render_classification_table(results))
+        return 0
+    if "--mcp" in sys.argv or (len(sys.argv) > 1 and sys.argv[1] == "mcp"):
+        import mcp_server
+        mcp_server.run_mcp_stdio()
+        return 0
+
     parser = argparse.ArgumentParser(
         prog="bounty_guard",
         description="Open-source prompt-injection & honeypot firewall for AI coding agents and bounty hunters.",
     )
+    parser.add_argument("--demo", action="store_true", help="Run instant 3-tier classification demo (SAFE_WITH_ESCROW, SAFE_NO_ESCROW, QUARANTINE)")
+    parser.add_argument("--mcp", action="store_true", help="Run JSON-RPC 2.0 stdio Model Context Protocol (MCP) server")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     p_vet = sub.add_parser("vet", help="Vet a GitHub issue/PR URL or owner/repo before cloning or solving")
