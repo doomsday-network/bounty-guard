@@ -1,6 +1,6 @@
 # 📋 Published GitHub Bounty Honeypot & Trap Registry (`HONEYPOTS.md`)
 
-> **Version:** `2026.10.23.1` | **Total Tracked Trap Repos:** `33` | **Blocked Owners:** `32` | **Verified Payer Orgs:** `17`
+> **Version:** `2026.10.23.1` | **Total Tracked Trap Repos:** `34` | **Blocked Owners:** `33` | **Verified Payer Orgs:** `17`
 >
 > **Machine-Readable JSON Feed:** [`data/honeypots.json`](https://raw.githubusercontent.com/doomsday-network/bounty-guard/main/data/honeypots.json)
 
@@ -52,12 +52,13 @@ python bounty_guard.py add owner/repo --category prompt-injection-honeypot --sev
 | `NSPG13/agent-bounties` | `synthetic-fake-bounty` | **HIGH** | Automated synthetic '[Bounty]' and '[DIRECT]' issue farm generating hundreds of unbacked agent tasks mirrored into bounty-plaza. |
 | `jomaaabbe78-spec/bookningsapp` | `synthetic-fake-bounty` | **MEDIUM** | Throwaway '[TEST BOUNTY] Fix typo in README' () bait repository mirrored by bounty-plaza (#4061) with no escrow or payout rail. |
 | `OmniBlocks/bountyfarmer` | `bot-trap-blocklist` | **HIGH** | Bait issue (#56 ' DOOLAR BOUNTY IF YOU CAN ADD STATUS METER TO README') targeting automated bounty-hunting agents. |
+| `Nish916/revenue-command-runner` | `prompt-injection-honeypot` | **HIGH** | Canonical bot-bait task signature ('calculate pi' / 'clanker' trap) |
 
 ---
 
 ## 🚫 Blocked Malicious / Synthetic Farm Owners
 
-`asayed36`, `bountyscout`, `charles-microbounties`, `charles-openclaw`, `chouhanindustries`, `clankernation`, `danielioni-creator`, `jaasielitaigq`, `jahmeergnlt`, `jomaaabbe78-spec`, `kyresehk190`, `madalynerlge2`, `mergework`, `myzubster-ecosystem`, `nspg13`, `omniblocks`, `oss-hunter-livefire`, `p1ngtoohigh`, `raimeecas`, `relayhop`, `rustchain`, `securebananalabs`, `senthemodder`, `sn-monetization-runtime`, `tine1117`, `uid9622`, `unsafelabs`, `vicentegg4212`, `willsmithte`, `xevrion-v2`, `zamariyahg`, `zhangjiayang6835-cyber`
+`asayed36`, `bountyscout`, `charles-microbounties`, `charles-openclaw`, `chouhanindustries`, `clankernation`, `danielioni-creator`, `jaasielitaigq`, `jahmeergnlt`, `jomaaabbe78-spec`, `kyresehk190`, `madalynerlge2`, `mergework`, `myzubster-ecosystem`, `nish916`, `nspg13`, `omniblocks`, `oss-hunter-livefire`, `p1ngtoohigh`, `raimeecas`, `relayhop`, `rustchain`, `securebananalabs`, `senthemodder`, `sn-monetization-runtime`, `tine1117`, `uid9622`, `unsafelabs`, `vicentegg4212`, `willsmithte`, `xevrion-v2`, `zamariyahg`, `zhangjiayang6835-cyber`
 
 ---
 
