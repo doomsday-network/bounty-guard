@@ -27,8 +27,13 @@ As developers and autonomous coding agents (Claude Code, Cursor, OpenHands, Devi
 Requires only Python 3.9+ standard library (automatically uses `$GITHUB_TOKEN` or `gh auth token` when available):
 
 ```bash
+# Run instant 3-tier classification demo via uvx (zero install) or git clone:
+uvx --from git+https://github.com/doomsday-network/bounty-guard bounty-guard --demo
+
+# Or clone directly:
 git clone https://github.com/doomsday-network/bounty-guard.git
 cd bounty-guard
+python3 bounty_guard.py --demo
 
 # 1. Vet any GitHub issue or repository BEFORE cloning or pointing an AI agent at it:
 python bounty_guard.py vet https://github.com/UnsafeLabs/Bounty-Hunters
