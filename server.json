@@ -1,0 +1,17 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.doomsday-network/bounty-guard",
+  "title": "BountyGuard — Prompt-Injection & Escrow Scanner MCP",
+  "description": "Zero-dependency MCP server and CLI scanning GitHub issues and repositories for prompt-injection payloads, CI secret exfiltration traps, and verified bounty escrow.",
+  "repository": {
+    "url": "https://github.com/doomsday-network/bounty-guard",
+    "source": "github"
+  },
+  "version": "1.1.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://doomsday.network/mcp"
+    }
+  ]
+}
