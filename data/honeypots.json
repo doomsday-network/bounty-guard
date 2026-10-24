@@ -271,6 +271,13 @@
       "reason": "1,354 automated scraped '[Bounty]' issues with zero escrow or maintainer payouts; reported by @rgentner123-cmd in #1",
       "reported_by": "rgentner123-cmd",
       "added_at": "2026-10-22"
+    },
+    {
+      "repo": "SecureBananaLabs/bug-bounty",
+      "category": "unescrowed_creator_restricted_farm",
+      "reason": "10,184 open issues with zero escrow/funding proof and creator-only PR restriction (@whyst0ne); reported by @2022117144 in #1",
+      "reported_by": "2022117144",
+      "added_at": "2026-10-24"
     }
   ]
 }
