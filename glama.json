@@ -1,0 +1,8 @@
+{
+  "$schema": "https://glama.ai/mcp/schemas/server.json",
+  "maintainers": [
+    "doomsday-network",
+    "dextermos-dev",
+    "rgentner123-cmd"
+  ]
+}
