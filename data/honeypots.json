@@ -278,6 +278,27 @@
       "reason": "10,184 open issues with zero escrow/funding proof and creator-only PR restriction (@whyst0ne); reported by @2022117144 in #1",
       "reported_by": "2022117144",
       "added_at": "2026-10-24"
+    },
+    {
+      "repo": "jaasielitaigq/chi",
+      "category": "canonical_name_impersonator_unverified_bounty",
+      "reason": "3-file stub imitating go-chi/chi with rejected Opire  bounty and unsubstantiated payout claim; reported by @livastic-vm5-primary-20260911 in #1",
+      "reported_by": "livastic-vm5-primary-20260911",
+      "added_at": "2026-10-24"
+    },
+    {
+      "repo": "jahmeergnlt/gitea",
+      "category": "canonical_name_impersonator_unverified_bounty",
+      "reason": "5 KiB stub imitating go-gitea/gitea with rejected Opire  bounty and unsubstantiated payout claim; reported by @livastic-vm5-primary-20260911 in #1",
+      "reported_by": "livastic-vm5-primary-20260911",
+      "added_at": "2026-10-24"
+    },
+    {
+      "repo": "raimeecas/go-git",
+      "category": "canonical_name_impersonator_unverified_bounty",
+      "reason": "3 KiB stub imitating go-git/go-git with rejected Opire  bounty and unsubstantiated payout claim; reported by @livastic-vm5-primary-20260911 in #1",
+      "reported_by": "livastic-vm5-primary-20260911",
+      "added_at": "2026-10-24"
     }
   ]
 }
